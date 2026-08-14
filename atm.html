@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Provider Commission Rates</title>
+<style>
+  :root{
+    --bg:#0f1115;
+    --panel:#171a21;
+    --panel-2:#1e222b;
+    --border:#2a2f3a;
+    --text:#e8eaed;
+    --muted:#9aa2b1;
+    --accent:#4f8cff;
+    --accent-2:#6ee7b7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height:100vh;
+  }
+
+  /* ---------- Lock screen ---------- */
+  #lockScreen{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background: radial-gradient(circle at 30% 20%, #1a1f2b, #0b0d11 70%);
+    z-index:10;
+  }
+  .lock-card{
+    background: var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:36px 32px;
+    width:320px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    text-align:center;
+  }
+  .lock-icon{
+    width:48px;height:48px;
+    margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;
+    background: var(--panel-2);
+    border-radius:50%;
+    font-size:22px;
+  }
+  .lock-card h1{
+    font-size:17px;
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  .lock-card p{
+    color:var(--muted);
+    font-size:13px;
+    margin:0 0 20px;
+  }
+  #pwInput{
+    width:100%;
+    padding:11px 12px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background: var(--bg);
+    color:var(--text);
+    font-size:14px;
+    outline:none;
+    margin-bottom:12px;
+  }
+  #pwInput:focus{ border-color: var(--accent); }
+  #unlockBtn{
+    width:100%;
+    padding:11px 12px;
+    border-radius:8px;
+    border:none;
+    background: var(--accent);
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  #unlockBtn:hover{ opacity:0.92; }
+  #errMsg{
+    color:#ff6b6b;
+    font-size:12.5px;
+    margin-top:10px;
+    min-height:16px;
+  }
+
+  /* ---------- Content ---------- */
+  #content{
+    display:none;
+    max-width:900px;
+    margin:0 auto;
+    padding:40px 20px 60px;
+  }
+  header{
+    margin-bottom:28px;
+  }
+  header h1{
+    font-size:22px;
+    margin:0 0 4px;
+  }
+  header p{
+    color:var(--muted);
+    font-size:13.5px;
+    margin:0;
+  }
+  .table-wrap{
+    background: var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  thead th{
+    text-align:left;
+    padding:13px 16px;
+    background: var(--panel-2);
+    color:var(--muted);
+    font-weight:600;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{
+    padding:12px 16px;
+    border-bottom:1px solid var(--border);
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background: rgba(255,255,255,0.02); }
+  td.provider{
+    font-weight:600;
+  }
+  td.rate{
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-2);
+  }
+  td.flat{
+    color: var(--muted);
+    font-style:italic;
+  }
+  .footer-note{
+    margin-top:18px;
+    color:var(--muted);
+    font-size:12px;
+  }
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-icon">🔒</div>
+    <h1>Protected Document</h1>
+    <p>Enter the password to view commission rates.</p>
+    <input type="password" id="pwInput" placeholder="Password" autocomplete="off">
+    <button id="unlockBtn">Unlock</button>
+    <div id="errMsg"></div>
+  </div>
+</div>
+
+<div id="content">
+  <header>
+    <h1>Provider Commission Rates</h1>
+    <p>Tiered commission by monthly volume (rates shown are percentages).</p>
+  </header>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>&lt; 10k</th>
+          <th>10k &ndash; 1m</th>
+          <th>&gt; 1m</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">Confidential — for internal use only.</div>
+</div>
+
+<script>
+  // ---- Data ----
+  const data = [
+    { name: "Pragmatic Play", tiers: [10, 9, 8.5] },
+    { name: "Hacksaw",        tiers: [11, 10, 9.5] },
+    { name: "Nolimit",        tiers: [13, 12, 11.5] },
+    { name: "PGSoft",         tiers: [7, 6.5, 6] },
+    { name: "JILI",           tiers: [9, 8, 7.5] },
+    { name: "Spribe",         tiers: [11, 10, 9.5] },
+    { name: "3oaks",          flat: 10 },
+    { name: "Booming",        flat: 10 },
+    { name: "Playtech",       tiers: [15, 14, 13.5] },
+    { name: "Wicked",         flat: 10 },
+    { name: "JDB",            tiers: [9, 8, 7.5] },
+    { name: "Sexy",           tiers: [9, 8, 7.5] },
+    { name: "Microgaming (MG)", tiers: [8, 7, 6.5] },
+    { name: "Blueprint",      flat: 10 },
+    { name: "Habanero",       tiers: [9, 8, 7.5] },
+    { name: "kygaming",       tiers: [7, 6, 5.5] },
+    { name: "Novomatic",      flat: 12 },
+    { name: "OctoPlay",       flat: 10 }
+  ];
+
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = data.map(row => {
+      if (row.flat !== undefined) {
+        return `<tr>
+          <td class="provider">${row.name}</td>
+          <td class="flat" colspan="3">Flat rate — ${row.flat}%</td>
+        </tr>`;
+      }
+      return `<tr>
+        <td class="provider">${row.name}</td>
+        <td class="rate">${row.tiers[0]}%</td>
+        <td class="rate">${row.tiers[1]}%</td>
+        <td class="rate">${row.tiers[2]}%</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // ---- Password gate ----
+  const PASSWORD = "confidentialatm";
+  const pwInput = document.getElementById('pwInput');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const errMsg = document.getElementById('errMsg');
+  const lockScreen = document.getElementById('lockScreen');
+  const content = document.getElementById('content');
+
+  function tryUnlock() {
+    if (pwInput.value === PASSWORD) {
+      lockScreen.style.display = 'none';
+      content.style.display = 'block';
+      renderTable();
+    } else {
+      errMsg.textContent = 'Incorrect password. Try again.';
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  }
+
+  unlockBtn.addEventListener('click', tryUnlock);
+  pwInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryUnlock();
+  });
+  pwInput.focus();
+</script>
+
+</body>
+</html>
