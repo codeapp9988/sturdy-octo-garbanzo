@@ -170,7 +170,7 @@
 <div id="content">
   <header>
     <h1>Provider Commission Rates</h1>
-    <p>Tiered commission by monthly volume (rates shown are percentages).</p>
+    <p>Tiered commission by monthly GGR (rates shown are percentages).</p>
   </header>
 
   <div class="table-wrap">
@@ -178,9 +178,9 @@
       <thead>
         <tr>
           <th>Provider</th>
-          <th>&lt; 10k</th>
-          <th>10k &ndash; 1m</th>
-          <th>&gt; 1m</th>
+          <th>GGR &lt; 10k</th>
+          <th>GGR 10k &ndash; 1m</th>
+          <th>GGR &gt; 1m</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -194,6 +194,7 @@
   // ---- Data ----
   const data = [
     { name: "Pragmatic Play", tiers: [10, 9, 8.5] },
+    { name: "Evolution",      tiers: [12, 11, 10.5] },
     { name: "Hacksaw",        tiers: [11, 10, 9.5] },
     { name: "Nolimit",        tiers: [13, 12, 11.5] },
     { name: "PGSoft",         tiers: [7, 6.5, 6] },
