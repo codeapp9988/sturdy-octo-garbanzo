@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Support Directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12141c;
+    --ink-2:#1a1d29;
+    --paper:#f4f2ec;
+    --paper-dim:#c9c6bc;
+    --gold:#c9a24b;
+    --teal:#4c7a79;
+    --line:rgba(244,242,236,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:960px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---- header / ticket header ---- */
+  header{
+    padding:72px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 18px;
+  }
+
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:clamp(32px, 5vw, 52px);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+    margin:0 0 20px;
+    color:var(--paper);
+  }
+
+  header p.sub{
+    max-width:52ch;
+    font-size:14.5px;
+    line-height:1.7;
+    color:var(--paper-dim);
+    margin:0;
+  }
+
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+    margin-top:36px;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--paper-dim);
+  }
+  .meta-row span b{
+    display:block;
+    color:var(--paper);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:20px;
+    letter-spacing:0;
+    text-transform:none;
+    margin-top:4px;
+  }
+
+  /* ---- ledger ---- */
+  main{ padding:56px 0 100px; }
+
+  .ledger{
+    border-top:1px solid var(--line);
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns:44px 1fr;
+    gap:24px;
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+    align-items:start;
+  }
+
+  .row .idx{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px;
+    color:var(--paper-dim);
+    padding-top:6px;
+  }
+
+  .row .body{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  @media (min-width:640px){
+    .row .body{
+      grid-template-columns:minmax(180px, 280px) 1fr;
+      align-items:center;
+    }
+  }
+
+  .provider-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:20px;
+    color:var(--paper);
+    letter-spacing:-0.01em;
+  }
+
+  .provider-name small{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:400;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-top:6px;
+  }
+
+  .chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .chip{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:56px;
+    padding:8px 12px;
+    border:1px solid var(--line);
+    border-radius:3px;
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:var(--paper);
+    background:var(--ink-2);
+  }
+
+  .chip::before{
+    content:'';
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:3px;
+    background:var(--gold);
+    border-radius:3px 0 0 3px;
+  }
+
+  /* ---- footer note ---- */
+  .note{
+    margin-top:48px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    font-size:12px;
+    line-height:1.8;
+    color:var(--paper-dim);
+    max-width:60ch;
+  }
+  .note b{ color:var(--paper); font-weight:500; }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:28px 0 60px;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--paper-dim);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  footer .dot{ color:var(--gold); }
+
+  @media (max-width:560px){
+    .row{ grid-template-columns:1fr; gap:8px; }
+    .row .idx{ padding-top:0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Content Ledger &mdash; Currency Coverage</p>
+    <h1>Supported currencies,<br>by provider.</h1>
+    <p class="sub">A reference list of the fiat currencies enabled for each game provider on the platform. Consult this page before enabling a provider for a market.</p>
+
+    <div class="meta-row">
+      <span>Providers listed<b>04</b></span>
+      <span>Categories<b>Slots &middot; Live</b></span>
+      <span>Unique currencies<b>05</b></span>
+      <span>Last reviewed<b>15 Aug 2026</b></span>
+    </div>
+  </header>
+
+  <main>
+    <div class="ledger">
+
+      <div class="row">
+        <div class="idx">01</div>
+        <div class="body">
+          <div class="provider-name">Evolution<small>Live Casino</small></div>
+          <div class="chips">
+            <span class="chip">USD</span>
+            <span class="chip">TRY</span>
+            <span class="chip">GBP</span>
+            <span class="chip">EUR</span>
+            <span class="chip">ARS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="idx">02</div>
+        <div class="body">
+          <div class="provider-name">Pragmatic Play<small>Slots</small></div>
+          <div class="chips">
+            <span class="chip">USD</span>
+            <span class="chip">TRY</span>
+            <span class="chip">GBP</span>
+            <span class="chip">EUR</span>
+            <span class="chip">ARS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="idx">03</div>
+        <div class="body">
+          <div class="provider-name">Pragmatic Play Live<small>Live Casino</small></div>
+          <div class="chips">
+            <span class="chip">USD</span>
+            <span class="chip">TRY</span>
+            <span class="chip">GBP</span>
+            <span class="chip">EUR</span>
+            <span class="chip">ARS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="idx">04</div>
+        <div class="body">
+          <div class="provider-name">Amusnet<small>Slots &amp; Live Casino</small></div>
+          <div class="chips">
+            <span class="chip">USD</span>
+            <span class="chip">TRY</span>
+            <span class="chip">GBP</span>
+            <span class="chip">EUR</span>
+            <span class="chip">ARS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      <b>Note.</b> All four providers currently support the same five currencies: US Dollar (USD), Turkish Lira (TRY), British Pound (GBP), Euro (EUR), and Argentine Peso (ARS).
+    </div>
+  </main>
+
+  <footer>
+    <span>Currency Support Directory</span>
+    <span><span class="dot">&#9679;</span> Internal reference</span>
+  </footer>
+</div>
+
+</body>
+</html>
