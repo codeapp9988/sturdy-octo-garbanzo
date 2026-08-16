@@ -67,23 +67,37 @@
   }
 
   .meta-row{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:1px;
+    margin-top:40px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .meta-row .stat{
+    background:var(--ink);
+    padding:16px 18px;
     display:flex;
-    flex-wrap:wrap;
-    gap:28px;
-    margin-top:36px;
-    font-size:11px;
-    letter-spacing:0.08em;
+    flex-direction:column;
+    gap:8px;
+  }
+  .meta-row .stat .label{
+    font-size:10.5px;
+    letter-spacing:0.1em;
     text-transform:uppercase;
     color:var(--paper-dim);
   }
-  .meta-row span b{
-    display:block;
-    color:var(--paper);
+  .meta-row .stat .value{
     font-family:'Space Grotesk', sans-serif;
-    font-size:20px;
-    letter-spacing:0;
-    text-transform:none;
-    margin-top:4px;
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--paper);
+  }
+  .meta-row .stat .value.accent{ color:var(--gold); }
+
+  @media (max-width:640px){
+    .meta-row{ grid-template-columns:repeat(2, 1fr); }
   }
 
   /* ---- ledger ---- */
@@ -212,12 +226,7 @@
     <h1>Supported currencies,<br>by provider.</h1>
     <p class="sub">A reference list of the fiat currencies enabled for each game provider on the platform. Consult this page before enabling a provider for a market.</p>
 
-    <div class="meta-row">
-      <span>Providers listed<b>04</b></span>
-      <span>Categories<b>Slots &middot; Live</b></span>
-      <span>Unique currencies<b>06</b></span>
-      <span>Last reviewed<b>15 Aug 2026</b></span>
-    </div>
+
   </header>
 
   <main>
@@ -234,6 +243,14 @@
             <span class="chip">EUR</span>
             <span class="chip">ARS</span>
             <span class="chip">LBP</span>
+            <span class="chip">TND</span>
+            <span class="chip">ILS</span>
+            <span class="chip">BYN</span>
+            <span class="chip">PEN</span>
+            <span class="chip">QAR</span>
+            <span class="chip">AED</span>
+            <span class="chip">PLN</span>
+            <span class="chip">SAR</span>
           </div>
         </div>
       </div>
@@ -286,7 +303,7 @@
     </div>
 
     <div class="note">
-      <b>Note.</b> All four providers currently support the same six currencies: US Dollar (USD), Turkish Lira (TRY), British Pound (GBP), Euro (EUR), Argentine Peso (ARS), and Lebanese Pound (LBP).
+      <b>Note.</b> All four providers support US Dollar (USD), Turkish Lira (TRY), British Pound (GBP), Euro (EUR), Argentine Peso (ARS), and Lebanese Pound (LBP). Evolution additionally supports Tunisian Dinar (TND), Israeli Shekel (ILS), Belarusian Ruble (BYN), Peruvian Sol (PEN), Qatari Riyal (QAR), UAE Dirham (AED), Polish Zloty (PLN), and Saudi Riyal (SAR).
     </div>
   </main>
 
